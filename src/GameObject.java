@@ -5,6 +5,7 @@ int x;
 int y;
 int width;
 int height;
+boolean isAlive=true;
 
 GameObject(int x,int y, int width,int height){
 	this.x=x;
@@ -13,10 +14,9 @@ GameObject(int x,int y, int width,int height){
 	this.height=height;
 }
 void update() {
-	x=x+10;
-	y=y+10;
+	
 }
 void draw(Graphics g) {
-	g.fillRect(x, y, 100, 100);
+
 }
 }

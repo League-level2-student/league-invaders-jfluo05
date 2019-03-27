@@ -13,6 +13,13 @@ public class GamePanel extends JPanel implements ActionListener,KeyListener{
 Timer timer= new Timer(1000/60, this);
 GameObject gameObject;
 Font titleFont;
+Font pressEnterToStartFont;
+Font spaceForInstructionsFont;
+Font gameOver;
+Font numOfEnemiesKilledFont;
+Font restartFont;
+
+Rocketship rocketship= new Rocketship(250, 700, 50, 50);
 
 final int MENU_STATE = 0;
 final int GAME_STATE = 1;
@@ -22,34 +29,63 @@ int currentState=MENU_STATE;
 
 GamePanel(){
 titleFont= new Font("Arial",Font.PLAIN,48);
+pressEnterToStartFont= new Font("Arial", Font.PLAIN, 30);
+spaceForInstructionsFont=new Font("Arial", Font.PLAIN, 30);
+gameOver=new Font("Arial",Font.BOLD,48);
+numOfEnemiesKilledFont= new Font("Arial", Font.PLAIN, 44);
+restartFont= new Font("Arial", Font.PLAIN, 44);
 }
 
 void updateMenuState() {
 	
 }
 void updateGameState() {
-	
+	rocketship.update();
 }
 void updateEndState() {
 	
 }
 void drawMenuState(Graphics g) {
+
 	g.setColor(Color.BLUE);
 
-	g.fillRect(0, 0, 500, 800);  
+	g.fillRect(0, 0, 500, 800); 
+	
 	g.setColor(Color.YELLOW);
 	g.setFont(titleFont);
     g.drawString("LEAGUE INVADERS", 20, 100);
+    
+    g.setColor(Color.YELLOW);
+	g.setFont(pressEnterToStartFont);
+    g.drawString("Press ENTER to start", 86, 370);
+    
+    g.setColor(Color.YELLOW);
+	g.setFont(spaceForInstructionsFont);
+    g.drawString("Press SPACE for instructions", 50, 500);
+  
 }
 void drawGameState(Graphics g) {
 	g.setColor(Color.BLACK);
 
-	g.fillRect(0, 0, 500, 800);   
+	g.fillRect(0, 0, 500, 800);
+	
+	rocketship.draw(g);
 }
 void drawEndState(Graphics g) {
 	g.setColor(Color.RED);
 
-	g.fillRect(0, 0, 500, 800);   
+	g.fillRect(0, 0, 500, 800);  
+	g.setColor(Color.BLACK);
+	g.setFont(gameOver);
+    g.drawString("GAME OVER", 100, 100);
+    
+    g.setColor(Color.BLACK);
+	g.setFont(pressEnterToStartFont);
+    g.drawString("You killed 0 enemies", 90, 300);
+    
+    g.setColor(Color.BLACK);
+	g.setFont(restartFont);
+    g.drawString("Press ENTER to restart", 20, 450);
 }
 
 void startGame() {
@@ -102,6 +138,19 @@ public void keyTyped(KeyEvent e) {
 @Override
 public void keyPressed(KeyEvent e) {
 	// TODO Auto-generated method stub
+	if(e.getKeyCode()==KeyEvent.VK_LEFT) {
+		rocketship.x=rocketship.x-rocketship.speed;
+	}
+	else if(e.getKeyCode()==KeyEvent.VK_RIGHT) {
+		rocketship.x=rocketship.x+rocketship.speed;
+	}
+	else if(e.getKeyCode()==KeyEvent.VK_UP) {
+		rocketship.moveUp();
+	}
+	else if(e.getKeyCode()==KeyEvent.VK_DOWN) {
+		rocketship.y=rocketship.y+rocketship.speed;
+	}
+	
 	System.out.println("keyPressed");
 	if(e.getKeyCode()==KeyEvent.VK_ENTER) {
 
