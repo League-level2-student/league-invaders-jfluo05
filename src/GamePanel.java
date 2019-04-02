@@ -20,6 +20,7 @@ Font numOfEnemiesKilledFont;
 Font restartFont;
 
 Rocketship rocketship= new Rocketship(250, 700, 50, 50);
+ObjectManager oM= new ObjectManager(rocketship);
 
 final int MENU_STATE = 0;
 final int GAME_STATE = 1;
@@ -40,7 +41,7 @@ void updateMenuState() {
 	
 }
 void updateGameState() {
-	rocketship.update();
+oM.update();
 }
 void updateEndState() {
 	
@@ -69,7 +70,7 @@ void drawGameState(Graphics g) {
 
 	g.fillRect(0, 0, 500, 800);
 	
-	rocketship.draw(g);
+	oM.draw(g);
 }
 void drawEndState(Graphics g) {
 	g.setColor(Color.RED);
@@ -149,6 +150,9 @@ public void keyPressed(KeyEvent e) {
 	}
 	else if(e.getKeyCode()==KeyEvent.VK_DOWN) {
 		rocketship.y=rocketship.y+rocketship.speed;
+	}
+	else if(e.getKeyCode()==KeyEvent.VK_SPACE) {
+		oM.addProjectile (new Projectile(rocketship.x, rocketship.y, 10, 10));
 	}
 	
 	System.out.println("keyPressed");
