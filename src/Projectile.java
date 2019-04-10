@@ -7,10 +7,11 @@ int speed= 10;
 
 	public Projectile(int x,int y, int width,int height) {
 		// TODO Auto-generated constructor stub
-		super(x,y,width,height);
+		super(x+20,y,width,height);
 	}
 void update() {
 		y=y-speed;
+		  super.update();
 	if(y<0) {
 		isAlive=false;
 	}

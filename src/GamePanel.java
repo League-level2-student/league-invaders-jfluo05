@@ -11,6 +11,7 @@ import javax.swing.Timer;
 
 public class GamePanel extends JPanel implements ActionListener,KeyListener{
 Timer timer= new Timer(1000/60, this);
+Timer alienSpawn;
 GameObject gameObject;
 Font titleFont;
 Font pressEnterToStartFont;
@@ -35,6 +36,11 @@ spaceForInstructionsFont=new Font("Arial", Font.PLAIN, 30);
 gameOver=new Font("Arial",Font.BOLD,48);
 numOfEnemiesKilledFont= new Font("Arial", Font.PLAIN, 44);
 restartFont= new Font("Arial", Font.PLAIN, 44);
+}
+
+void spawnAliens() {
+	alienSpawn= new Timer(1000,oM);
+	alienSpawn.start();
 }
 
 void updateMenuState() {
@@ -161,11 +167,13 @@ public void keyPressed(KeyEvent e) {
 		if(currentState == MENU_STATE){
 
             currentState = GAME_STATE;
+            spawnAliens();
 
     }
 		else if(currentState == GAME_STATE){
 
             currentState = END_STATE;
+            alienSpawn.stop();
 
     }
 		else if(currentState == END_STATE){
