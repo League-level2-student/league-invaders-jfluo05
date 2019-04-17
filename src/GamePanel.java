@@ -5,7 +5,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
@@ -19,6 +22,8 @@ Font spaceForInstructionsFont;
 Font gameOver;
 Font numOfEnemiesKilledFont;
 Font restartFont;
+public static BufferedImage spaceImg;
+public static BufferedImage bulletImg;
 
 Rocketship rocketship= new Rocketship(250, 700, 50, 50);
 ObjectManager oM= new ObjectManager(rocketship);
@@ -36,7 +41,20 @@ spaceForInstructionsFont=new Font("Arial", Font.PLAIN, 30);
 gameOver=new Font("Arial",Font.BOLD,48);
 numOfEnemiesKilledFont= new Font("Arial", Font.PLAIN, 44);
 restartFont= new Font("Arial", Font.PLAIN, 44);
+
+try {
+	 bulletImg = ImageIO.read(this.getClass().getResourceAsStream("bullet.png"));
+	 spaceImg = ImageIO.read(this.getClass().getResourceAsStream("space.png"));
+
+} catch (IOException e) {
+
+        // TODO Auto-generated catch block
+
+        e.printStackTrace();
+
 }
+}
+
 
 void spawnAliens() {
 	alienSpawn= new Timer(1000,oM);
@@ -48,6 +66,13 @@ void updateMenuState() {
 }
 void updateGameState() {
 oM.update();
+oM.checkCollision();
+
+if(!rocketship.isAlive) {
+	currentState=END_STATE;
+}else {
+	oM.purgeObjects();
+}
 }
 void updateEndState() {
 	
@@ -72,10 +97,8 @@ void drawMenuState(Graphics g) {
   
 }
 void drawGameState(Graphics g) {
-	g.setColor(Color.BLACK);
+    g.drawImage(GamePanel.spaceImg, 0, 0, LeagueInvaders.width, LeagueInvaders.height, null);
 
-	g.fillRect(0, 0, 500, 800);
-	
 	oM.draw(g);
 }
 void drawEndState(Graphics g) {
@@ -88,7 +111,7 @@ void drawEndState(Graphics g) {
     
     g.setColor(Color.BLACK);
 	g.setFont(pressEnterToStartFont);
-    g.drawString("You killed 0 enemies", 90, 300);
+    g.drawString("You killed "+oM.getScore() +" enemies", 90, 300);
     
     g.setColor(Color.BLACK);
 	g.setFont(restartFont);
@@ -179,7 +202,9 @@ public void keyPressed(KeyEvent e) {
 		else if(currentState == END_STATE){
 
             currentState = MENU_STATE;
-
+            rocketship=new Rocketship(rocketship.x, rocketship.y, rocketship.width, rocketship.height);
+            oM=new ObjectManager(rocketship);
+            System.out.println("GAME OVER");
     }
 	}
 }
